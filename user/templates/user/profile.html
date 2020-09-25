@@ -1,0 +1,21 @@
+{% extends "user/base.html" %}
+{% block content %}
+{% load static %}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="col-4">
+            <img class="img-fluid img-circle account_img" src={{ NewUser.profile.image.url }} alt="profile picture">
+        </div>
+        <div class="col-8">
+            <h3>{{ NewUser.first_name }} {{ NewUser.last_name }}</h3>
+            <P>{{ NewUser.email }}</P>
+        </div>
+    </div>
+    <div class="card-body">
+        {% block profile %}{%endblock%}
+    </div>
+</div>
+
+{% endblock %}

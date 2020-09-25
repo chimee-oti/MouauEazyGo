@@ -1,0 +1,12 @@
+{% extends "user/profile.html" %}
+{% block profile %}
+
+# lists out all the fields of the profile model
+{% for f in profile.user.fields %}
+<section class="">
+    <h2 class="">{{ f.name }}</h2>
+    <p>{{ f.value }}</p>
+</section>
+{% endfor %}
+
+{% endblock profile%}
