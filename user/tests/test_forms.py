@@ -31,12 +31,12 @@ class TestRegistrationForm(TestCase):
     def test_that_NewUser_data_is_saved(self):
 
         self.assertEqual(NewUser._meta.get_field(
-            'user_name').name, 'username')
-        self.assertEqual(NewUser._meta.get_field('email').name, 'email')
+            'user_name').value_from_object(self.user), 'username')
+        self.assertEqual(NewUser._meta.get_field('email').value_from_object(self.user), 'email')
         self.assertEqual(NewUser._meta.get_field(
-            'first_name').name, 'firstname')
+            'first_name').value_from_object(self.user), 'firstname')
         self.assertEqual(NewUser._meta.get_field(
-            'last_name').name, 'lastname'),
+            'last_name').value_from_object(self.user), 'lastname'),
 
     def test_that_profile_data_is_saved(self):
 
