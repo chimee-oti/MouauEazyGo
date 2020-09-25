@@ -15,7 +15,7 @@ class TestRegistrationForm(TestCase):
             'first_name': 'firstname',
             'last_name': 'lastname',
             'about': 'this is the about',
-            'date_of_birth': 'April 5, 2002',
+            'date_of_birth': '5/4/2002',
             'country': 'Nigeria'
         }
         cls.register_url = reverse('register')
@@ -32,7 +32,8 @@ class TestRegistrationForm(TestCase):
 
         self.assertEqual(NewUser._meta.get_field(
             'user_name').value_from_object(self.user), 'username')
-        self.assertEqual(NewUser._meta.get_field('email').value_from_object(self.user), 'email')
+        self.assertEqual(NewUser._meta.get_field(
+            'email').value_from_object(self.user), 'email')
         self.assertEqual(NewUser._meta.get_field(
             'first_name').value_from_object(self.user), 'firstname')
         self.assertEqual(NewUser._meta.get_field(

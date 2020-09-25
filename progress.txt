@@ -1,0 +1,4 @@
+test for forms will be done with selenuim.
+
+looks like the profile and user are not being recreated because the 
+user is not being identified. My url parameter is not being passed to the view

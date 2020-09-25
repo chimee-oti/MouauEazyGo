@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class UserRegistrationForm(UserCreationForm):
-    date_of_birth = forms.DateField(input_formats=["%F %j, %Y"], required=True)
+    date_of_birth = forms.DateField(required=True)
     country = forms.CharField(max_length=50, required=True)
     image = forms.ImageField(required=False)
     about = forms.CharField(widget=forms.Textarea, required=False)
@@ -23,7 +23,8 @@ class UserRegistrationForm(UserCreationForm):
         email = self.cleaned_data['email']
         first_name = self.cleaned_data['first_name']
         last_name = self.cleaned_data['last_name']
-        user, created = NewUser.objects.get_or_create(user_name=user_name, email=email, first_name=first_name, last_name=last_name)
+        user, created = NewUser.objects.get_or_create(
+            user_name=user_name, email=email, first_name=first_name, last_name=last_name)
         user.save()
         user_profile = Profile(
             user=user,

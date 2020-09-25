@@ -24,7 +24,12 @@ class user_register_view(CreateView):
     template_name = "user/register.html"
     form_class = UserRegistrationForm
 
+    def dispatch(self, request, *args, **kwargs):
+        self.pk = kwargs['pk']
+        return super(user_register_view, self).dispatch(request, *args, **kwargs)
+
     # I had to override the form_valid method and added form to the self parameter since get_success_url can't access form directly
+
     def form_valid(self, form):
         self.form = form
         return HttpResponseRedirect(self.get_success_url())
@@ -32,10 +37,10 @@ class user_register_view(CreateView):
     # if the user's username is in slug, then use it in the profile's url else then pick the username from the form and use instead
     def get_success_url(self):
         if 'slug' in self.kwargs:
-            slug = self.kwargs['slug']
+            slug = self.kwargs['pk']
         else:
-            slug = str(self.form.cleaned_data['user'])
-        return reverse('profile', slug=slug)
+            slug = str(self.form.cleaned_data['user_name'])
+        return reverse('profile', pk=self.pk)
 
 
 class password_change_view(auth_views.PasswordChangeView):
@@ -73,11 +78,11 @@ class profile_update_view(UserPassesTestMixin, UpdateView):
 
     def get_object(self):
         user = self.request.user
-        return get_object_or_404(Profile, pk=user.id)
+        return get_object_or_404(Profile, pk=pk)
 
     def test_func(self):
         x = self.request.user.user_name
-        y = self.kwargs['slug']
+        y = self.kwargs['pk']
         if x == y:
             return True
         else:
@@ -105,8 +110,8 @@ class user_update_view(UserPassesTestMixin, UpdateView):
         return get_object_or_404(Profile.objects.get(pk=user.id))
 
     def test_func(self):
-        x = self.request.user.user_name
-        y = self.kwargs['slug']
+        x = self.request.user.pk
+        y = self.kwargs['pk']
         if x == y:
             return True
         else:
