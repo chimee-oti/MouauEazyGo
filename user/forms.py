@@ -7,7 +7,7 @@ class UserRegistrationForm(UserCreationForm):
     date_of_birth = forms.DateField(input_formats=["%F %j, %Y"], required=True)
     country = forms.CharField(max_length=50, required=True)
     image = forms.ImageField(required=False)
-    about = forms.CharField(widget=forms.Textarea)
+    about = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
         model = NewUser

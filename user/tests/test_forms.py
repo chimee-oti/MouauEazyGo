@@ -1,7 +1,8 @@
 from django.test import TestCase, Client
 from user.forms import UserRegistrationForm
 from django.contrib.auth import get_user_model
-from user.models import Profile
+from user.models import Profile, NewUser
+from django.shortcuts import reverse
 
 
 class TestRegistrationForm(TestCase):
@@ -17,24 +18,28 @@ class TestRegistrationForm(TestCase):
             'date_of_birth': 'April 5, 2002',
             'country': 'Nigeria'
         }
+        cls.register_url = reverse('register')
 
         # email is save to use because it is a unique field
 
     def setUp(self):
         self.client = Client()
-        self.reponse = self.client.post('register/', data=self.form_data)
+        self.reponse = self.client.post(self.register_url, data=self.form_data)
         self.user = get_user_model().objects.filter(email="test@gmail.com").first()
-        self.profile = Profile.objects.get(user=self.user)
+        self.profile = Profile.objects.filter(user=self.user)
 
     def test_that_NewUser_data_is_saved(self):
 
-        self.assertEqual(self.user.user_name, 'username')
-        self.assertEqual(self.user.email, 'email')
-        self.assertEqual(self.user.first_name, 'firstname')
-        self.assertEqual(self.user.last_name, 'lastname'),
+        self.assertEqual(NewUser._meta.get_field(
+            'user_name').name, 'username')
+        self.assertEqual(NewUser._meta.get_field('email').name, 'email')
+        self.assertEqual(NewUser._meta.get_field(
+            'first_name').name, 'firstname')
+        self.assertEqual(NewUser._meta.get_field(
+            'last_name').name, 'lastname'),
 
     def test_that_profile_data_is_saved(self):
 
-        self.assertEqual(self.user.about, 'this is the about'),
-        self.assertEqual(self.user.date_of_birth, 'April 5, 2002')
-        self.assertEqual(self.user.country, 'Nigeria'),
+        self.assertEqual(self.profile.about, 'this is the about'),
+        self.assertEqual(self.profile.date_of_birth, 'April 5, 2002')
+        self.assertEqual(self.profile.country, 'Nigeria'),
