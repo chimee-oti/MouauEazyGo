@@ -36,11 +36,11 @@ class user_register_view(CreateView):
 
     # if the user's username is in slug, then use it in the profile's url else then pick the username from the form and use instead
     def get_success_url(self):
-        if 'slug' in self.kwargs:
+        if 'pk' in self.kwargs:
             slug = self.kwargs['pk']
         else:
             slug = str(self.form.cleaned_data['user_name'])
-        return reverse('profile', pk=self.pk)
+        return reverse('profile', slug=slug)
 
 
 class password_change_view(auth_views.PasswordChangeView):
