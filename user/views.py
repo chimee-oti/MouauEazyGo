@@ -23,24 +23,33 @@ class logout_view(auth_views.LogoutView):
 class user_register_view(CreateView):
     template_name = "user/register.html"
     form_class = UserRegistrationForm
+    model = NewUser
 
-    def dispatch(self, request, *args, **kwargs):
-        self.pk = kwargs['pk']
-        return super(user_register_view, self).dispatch(request, *args, **kwargs)
 
     # I had to override the form_valid method and added form to the self parameter since get_success_url can't access form directly
 
     def form_valid(self, form):
         self.form = form
+        if form.is_bound:
+            self.kwargs['name_of_user'] = form.cleaned_data['user_name']
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        try:
+            data['name_of_user'] = self.kwargs['name_of_user']
+        except KeyError:
+            return data
+        return data
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(name__startswith=self.kwargs[self.request.user.user_name])
 
     # if the user's username is in slug, then use it in the profile's url else then pick the username from the form and use instead
     def get_success_url(self):
-        if 'pk' in self.kwargs:
-            slug = self.kwargs['pk']
-        else:
-            slug = str(self.form.cleaned_data['user_name'])
-        return reverse('profile', slug=slug)
+        if self.kwargs['name_of_user']:
+            return reverse('profile', args=(self.kwargs['name_of_user']))
 
 
 class password_change_view(auth_views.PasswordChangeView):
@@ -78,14 +87,19 @@ class profile_update_view(UserPassesTestMixin, UpdateView):
 
     def get_object(self):
         user = self.request.user
-        return get_object_or_404(Profile, pk=pk)
+        return get_object_or_404(Profile, pk=user.id)
 
+    # try to get the user_name from the current user.
+    # if the user is an Anoynmous user then just redirect to detail page
     def test_func(self):
-        x = self.request.user.user_name
-        y = self.kwargs['pk']
-        if x == y:
-            return True
-        else:
+        try:
+            x = self.request.user.user_name
+            y = self.kwargs.get('name_of_user')
+            if x == y:
+                return True
+            else:
+                return redirect('profile_detail_view.as_view()')
+        except AttributeError:
             return redirect('profile_detail_view.as_view()')
 
 
@@ -94,25 +108,8 @@ class profile_update_view(UserPassesTestMixin, UpdateView):
 # is not the one access the view
 class profile_detail_view(DetailView):
     template_name = "user/profile_detail.html"
+    model = Profile
 
     def get_object(self):
         user = self.request.user
         return get_object_or_404(Profile.objects.get(pk=user.id))
-
-
-class user_update_view(UserPassesTestMixin, UpdateView):
-    model = NewUser
-    fields = ('user_name', 'first_name', 'last_name', )
-    template_name = "user/profile_update_form.html"
-
-    def get_object(self):
-        user = self.request.user
-        return get_object_or_404(Profile.objects.get(pk=user.id))
-
-    def test_func(self):
-        x = self.request.user.pk
-        y = self.kwargs['pk']
-        if x == y:
-            return True
-        else:
-            return redirect('profile_detail_view.as_view()')
