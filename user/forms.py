@@ -19,21 +19,13 @@ class UserRegistrationForm(UserCreationForm):
             raise NotImplementedError(
                 "Can't create User and UserProfile without database save")
         user = super(UserRegistrationForm, self).save(commit=True)
-        user_name = self.cleaned_data['user_name']
-        email = self.cleaned_data['email']
-        first_name = self.cleaned_data['first_name']
-        last_name = self.cleaned_data['last_name']
-        user, created = NewUser.objects.get_or_create(
-            user_name=user_name, email=email, first_name=first_name, last_name=last_name)
         user.save()
-        user_profile = Profile(
-            user=user,
-            about=self.cleaned_data['about'],
-            date_of_birth=self.cleaned_data['date_of_birth'],
-            country=self.cleaned_data['country']
-        )
-        user_profile.save()
-        return user, user_profile
+        profile, created = Profile.objects.get_or_create(user=user)
+        profile.about = self.cleaned_data['about']
+        profile.date_of_birth = self.cleaned_data['date_of_birth']
+        profile.country = self.cleaned_data['country']
+        profile.save()
+        return user, profile
 
 
 class ProfileForm(forms.ModelForm):

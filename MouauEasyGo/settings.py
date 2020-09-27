@@ -147,3 +147,5 @@ DEFAULT_FROM_EMAIL = "elishae621@gmail.com"
 
 
 AUTH_USER_MODEL = 'user.NewUser'
+
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )

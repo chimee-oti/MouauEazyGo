@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block profile %}
 
-<form method="post" action="{% profile_update %}">
+<form method="post" action="{% url 'profile' %}">
     {% csrf_token %}
 
     {{ UserForm|crispy }}

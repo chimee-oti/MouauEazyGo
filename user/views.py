@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from user.forms import ProfileForm, UserForm, UserRegistrationForm
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 
 
 class login_view(auth_views.LoginView):
@@ -23,31 +24,17 @@ class logout_view(auth_views.LogoutView):
 class user_register_view(CreateView):
     template_name = "user/register.html"
     form_class = UserRegistrationForm
-    model = NewUser
 
-
-    # I had to override the form_valid method and added form to the self parameter since get_success_url can't access form directly
-
+    # login user if form is valid and form data has been saved
     def form_valid(self, form):
-        self.form = form
-        return HttpResponseRedirect(self.get_success_url())
+        self.object = form.save()
+        new_user = authenticate(
+            email=form.cleaned_data['email'], password=form.cleaned_data['password1'], )
+        login(self.request, new_user)
+        return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        try:
-            data['name_of_user'] = self.request.GET.get('username')
-        except KeyError:
-            return data
-        return data
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.filter(name__startswith=self.kwargs[self.request.user.user_name])
-
-    # if the user's username is in slug, then use it in the profile's url else then pick the username from the form and use instead
     def get_success_url(self):
-        if self.request.GET.get('username'):
-            return reverse('profile', args=(self.request.GET.get('username'))
+        return reverse('profile')
 
 
 class password_change_view(auth_views.PasswordChangeView):
@@ -78,7 +65,7 @@ class password_reset_complete_view(auth_views.PasswordResetCompleteView):
 # the viewer passes the test only if they are the logged in user
 # if they are not, then they are redirected to the the
 # profile_detail_view.
-class profile_update_view(UserPassesTestMixin, UpdateView):
+class profile_update_view(UpdateView):
     model = Profile
     fields = ['date_of_birth', 'country', 'about', 'image', ]
     template_name = 'user/profile_update_form.html'
@@ -86,19 +73,6 @@ class profile_update_view(UserPassesTestMixin, UpdateView):
     def get_object(self):
         user = self.request.user
         return get_object_or_404(Profile, pk=user.id)
-
-    # try to get the user_name from the current user.
-    # if the user is an Anoynmous user then just redirect to detail page
-    def test_func(self):
-        try:
-            x = self.request.user.user_name
-            y = self.kwargs.get('name_of_user')
-            if x == y:
-                return True
-            else:
-                return redirect('profile_detail_view.as_view()')
-        except AttributeError:
-            return redirect('profile_detail_view.as_view()')
 
 
 # this is the profile page as viewed by the general public
