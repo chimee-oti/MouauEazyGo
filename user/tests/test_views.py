@@ -30,13 +30,12 @@ class TestViewGetMethods(TestCase):
     def setUp(self):
         self.client = Client()
         self.login_url = reverse('login')
-    
 
-    def test_register_view_get(self):
+    def test_login_view_get(self):
         self.response = self.client.post(self.login_url)
 
         self.assertEqual(self.response.status_code, 200)
-        self.assertTemplateUsed(response, 'user/register.html')
+        self.assertTemplateUsed(self.response, 'user/login.html')
 
     # def test_user_update_view_get(self):
     #     self.repso
