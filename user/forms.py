@@ -31,10 +31,10 @@ class UserRegistrationForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('date_of_birth', 'country', 'about', 'image',)
+        fields = ['date_of_birth', 'country', 'about', 'image', ]
 
 
 class UserForm(forms.ModelForm):
     class Meta:
         model = NewUser
-        fields = ('user_name', 'first_name', 'last_name', )
+        fields = ['user_name', 'first_name', 'last_name', ]

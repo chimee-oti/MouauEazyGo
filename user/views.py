@@ -11,16 +11,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 
 
-class login_view(auth_views.LoginView):
-    template_name = "user/login.html"
-
-
-class logout_view(auth_views.LogoutView):
-    template_name = "user/logout.html"
-
-# direct the user to their profile page after registration
-
-
 class user_register_view(CreateView):
     template_name = "user/register.html"
     form_class = UserRegistrationForm
@@ -33,8 +23,51 @@ class user_register_view(CreateView):
         login(self.request, new_user)
         return super().form_valid(form)
 
+    # direct the user to their profile page after registration
     def get_success_url(self):
         return reverse('profile')
+
+# view for user to update their details
+# this will inherit from the same template with profile update
+
+
+class user_update_view(UpdateView):
+    model = NewUser
+    template_name = 'user/user_update_form.html'
+    form_class = UserForm
+
+    def get_object(self):
+        user = self.request.user
+        return get_object_or_404(NewUser, pk=user.id)
+
+
+# view for user to update their details
+# this will inherit from the same template with user update
+class profile_update_view(UpdateView):
+    model = Profile
+    template_name = 'user/profile_update_form.html'
+    form_class = ProfileForm
+
+    def get_object(self):
+        user = self.request.user
+        return get_object_or_404(Profile, pk=user.id)
+
+
+class profile_detail_view(DetailView):
+    template_name = "user/profile_detail.html"
+    model = Profile
+
+    def get_object(self):
+        user = self.request.user
+        return get_object_or_404(Profile.objects.get(pk=user.id))
+
+
+class login_view(auth_views.LoginView):
+    template_name = "user/login.html"
+
+
+class logout_view(auth_views.LogoutView):
+    template_name = "user/logout.html"
 
 
 class password_change_view(auth_views.PasswordChangeView):
@@ -59,29 +92,3 @@ class password_reset_confirm_view(auth_views.PasswordResetConfirmView):
 
 class password_reset_complete_view(auth_views.PasswordResetCompleteView):
     template_name = "user/password_reset_complete.html"
-
-
-# this is the profile page as viewed by the owner of the profile
-# the viewer passes the test only if they are the logged in user
-# if they are not, then they are redirected to the the
-# profile_detail_view.
-class profile_update_view(UpdateView):
-    model = Profile
-    fields = ['date_of_birth', 'country', 'about', 'image', ]
-    template_name = 'user/profile_update_form.html'
-
-    def get_object(self):
-        user = self.request.user
-        return get_object_or_404(Profile, pk=user.id)
-
-
-# this is the profile page as viewed by the general public
-# this view can only be reached if the current logged  in user
-# is not the one access the view
-class profile_detail_view(DetailView):
-    template_name = "user/profile_detail.html"
-    model = Profile
-
-    def get_object(self):
-        user = self.request.user
-        return get_object_or_404(Profile.objects.get(pk=user.id))
