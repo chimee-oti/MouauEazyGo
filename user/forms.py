@@ -24,6 +24,7 @@ class UserRegistrationForm(UserCreationForm):
         profile.about = self.cleaned_data['about']
         profile.date_of_birth = self.cleaned_data['date_of_birth']
         profile.country = self.cleaned_data['country']
+        profile.image = self.cleaned_data['image']
         profile.save()
         return user, profile
 
