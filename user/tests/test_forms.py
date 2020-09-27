@@ -1,31 +1,34 @@
 from django.test import TestCase
 from user.forms import UserRegistrationForm
-from django.core.files.uploadedfile import SimpleUploadedFile
-from base64 import b64decode
-from django.core.files.base import ContentFile
+from io import BytesIO
 
 
-class test_user_registration_form(TestCase):
+class TestUserRegistrationForm(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.image_data = b64decode(
-            "R0lGODlhAQABAIABAP8AAP///yH5BAEAAAEALAAAAAABAAEAAAICRAEAOw==")
-        cls.image_file = ContentFile(cls.image_data, 'one.jpg')
-        cls.uploaded_image_file = SimpleUploadedFile(
-            cls.image_file.name,
-            cls.image_file.read(),
-            content_type="image/png"
-        )
-        cls.form = UserRegistrationForm(data={
+        cls.img = BytesIO(b'mybinarydata')
+        cls.img.name = 'myimage.jpg'
+
+    def test_that_form_data_is_valid(self):
+        form = UserRegistrationForm(data={
             "email": "test@gmail.com",
             "user_name": "myusername",
             "first_name": "myfirstname",
             "last_name": "mylastname",
-            "date_of_birth": "3/3/5223",
+            "password1": "SecretPassword1",
+            "password2": "SecretPassword1",
+            "date_of_birth": "5/4/2002",
             "country": "Nigeria",
-            "image": "cls.uploaded_image_file",
+            "image": self.img,
             "about": "This is the fucking about"
         })
 
-    
+        self.assertTrue(form.is_valid())
+
+    def test_form_with_no_data(self):
+        form = UserRegistrationForm(data={})
+
+        self.assertFalse(form.is_valid())
+        # image and about fields are not required
+        self.assertEqual(len(form.errors), 8)

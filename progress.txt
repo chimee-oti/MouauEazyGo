@@ -1,4 +1,2 @@
-test for forms will be done with selenuim.
-
-looks like the profile and user are not being recreated because the 
-user is not being identified. My url parameter is not being passed to the view
+I want the same url to call a view which would call both 
+the profile_update_view and the user_update_view
