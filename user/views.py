@@ -30,14 +30,12 @@ class user_register_view(CreateView):
 
     def form_valid(self, form):
         self.form = form
-        if form.is_bound:
-            self.kwargs['name_of_user'] = form.cleaned_data['user_name']
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         try:
-            data['name_of_user'] = self.kwargs['name_of_user']
+            data['name_of_user'] = self.request.GET.get('username')
         except KeyError:
             return data
         return data
@@ -48,8 +46,8 @@ class user_register_view(CreateView):
 
     # if the user's username is in slug, then use it in the profile's url else then pick the username from the form and use instead
     def get_success_url(self):
-        if self.kwargs['name_of_user']:
-            return reverse('profile', args=(self.kwargs['name_of_user']))
+        if self.request.GET.get('username'):
+            return reverse('profile', args=(self.request.GET.get('username'))
 
 
 class password_change_view(auth_views.PasswordChangeView):
