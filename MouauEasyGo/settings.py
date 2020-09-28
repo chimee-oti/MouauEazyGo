@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+from django.urls import reverse_lazy
 from pathlib import Path, PurePath
 import os
 
@@ -133,7 +133,7 @@ MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'chat/home'
+LOGIN_REDIRECT_URL = reverse_lazy('profile_update user.id')
 LOGIN_URL = 'user/login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

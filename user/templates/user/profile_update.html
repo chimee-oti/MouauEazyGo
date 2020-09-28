@@ -1,0 +1,24 @@
+{% extends 'user/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row'>
+    <div class="col-12">
+        <h1>User object form is printed</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ forms.u_form|crispy }}
+            <button name='action' value='u_form' type='submit'>Update user info</button>
+        </form>
+    </div>
+</div>
+<div class='row'>
+    <div class="col-12">
+        <h1>Profile update form is printed</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ forms.p_form|crispy }}
+            <button name='action' value='p_form' type='submit'>Update user info</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
