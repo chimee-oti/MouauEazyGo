@@ -1,5 +1,5 @@
 from django import forms
-from user.models import Profile, NewUser
+from user.models import Profile, User
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -10,8 +10,8 @@ class UserRegistrationForm(UserCreationForm):
     about = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
-        model = NewUser
-        fields = ['email', 'user_name', 'first_name', 'last_name', ]
+        model = User
+        fields = ['email', 'username', 'firstname', 'lastname', ]
 
     # save profile info as well as the user info in the form
     def save(self, commit=True):
@@ -37,5 +37,5 @@ class ProfileForm(forms.ModelForm):
 
 class UserForm(forms.ModelForm):
     class Meta:
-        model = NewUser
-        fields = ['user_name', 'first_name', 'last_name', ]
+        model = User
+        fields = ['username', 'firstname', 'lastname', ]

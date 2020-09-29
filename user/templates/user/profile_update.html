@@ -6,8 +6,8 @@
         <h1>User object form is printed</h1>
         <form method="POST">
             {% csrf_token %}
-            {{ forms.u_form|crispy }}
-            <button name='action' value='u_form' type='submit'>Update user info</button>
+            {{ forms.uForm|crispy }}
+            <button name='action' value='uForm' type='submit'>Update user info</button>
         </form>
     </div>
 </div>
@@ -16,8 +16,8 @@
         <h1>Profile update form is printed</h1>
         <form method="POST">
             {% csrf_token %}
-            {{ forms.p_form|crispy }}
-            <button name='action' value='p_form' type='submit'>Update user info</button>
+            {{ forms.pForm|crispy }}
+            <button name='action' value='pForm' type='submit'>Update user info</button>
         </form>
     </div>
 </div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, views as auth_views
 from django.views.generic.detail import DetailView
-from user.models import Profile, NewUser
+from user.models import Profile, User
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -32,18 +32,18 @@ class user_register_view(CreateView):
 
 class update_view(MultiFormsView):
     template_name = "user/profile_update.html"
-    form_classes = {'u_form': UserForm,
-                    'p_form': ProfileForm}
+    form_classes = {'uForm': UserForm,
+                    'pForm': ProfileForm}
     success_url = reverse_lazy("profile_update")
 
-    def get_u_form_initial(self):
+    def get_uForm_initial(self):
         user = self.request.user
         return {'email': user.email,
-                'username': user.user_name,
-                'firstname': user.first_name,
-                'lastname': user.last_name}
+                'username': user.username,
+                'firstname': user.firstname,
+                'lastname': user.lastname}
 
-    def get_p_form_initial(self):
+    def get_pForm_initial(self):
         profile = self.request.user.profile
         return {'image': profile.image,
                 'about': profile.about,
@@ -58,28 +58,24 @@ class update_view(MultiFormsView):
 
     def user_form_valid(self, form):
         user = self.request.user
-        if form.cleaned_data['user_name']:
-            user.user_name = form.cleaned_data['user_name']
-        if form.cleaned_data['first_name']:
-            user.first_name = form.cleaned_data['first_name']
-        if form.cleaned_data['last_name']:
-            user.last_name = form.cleaned_data['last_name']
+        if form.cleaned_data['username']:
+            user.username = form.cleaned_data['username']
+        if form.cleaned_data['firstname']:
+            user.firstname = form.cleaned_data['firstname']
+        if form.cleaned_data['lastname']:
+            user.lastname = form.cleaned_data['lastname']
         user.save()
         user = form.save(self.request)
-        return form.u_form(self.request, user, self.get_success_url())
+        return form.uForm(self.request, user, self.get_success_url())
 
     def profile_form_valid(self, form):
         user = form.save(self.request)
-        return form.p_form(self.request, user, self.get_success_url())
+        return form.pForm(self.request, user, self.get_success_url())
 
 
 class profile_detail_view(LoginRequiredMixin, DetailView):
     template_name = "user/profile_detail.html"
     model = Profile
-
-    def get_object(self):
-        user = self.request.user
-        return get_object_or_404(Profile.objects.get(pk=user.id))
 
 
 class login_view(auth_views.LoginView):

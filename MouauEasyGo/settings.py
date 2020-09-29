@@ -146,6 +146,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = "elishae621@gmail.com"
 
 
-AUTH_USER_MODEL = 'user.NewUser'
+AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )

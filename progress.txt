@@ -1,2 +1,2 @@
-I want the same url to call a view which would call both 
-the profile_update_view and the user_update_view
+I will continue with the user app after I watch videos on
+using muiltiple videos

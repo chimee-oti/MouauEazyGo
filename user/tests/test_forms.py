@@ -13,9 +13,9 @@ class TestUserRegistrationForm(TestCase):
     def test_that_form_data_is_valid(self):
         form = UserRegistrationForm(data={
             "email": "test@gmail.com",
-            "user_name": "myusername",
-            "first_name": "myfirstname",
-            "last_name": "mylastname",
+            "username": "myusername",
+            "firstname": "myfirstname",
+            "lastname": "mylastname",
             "password1": "SecretPassword1",
             "password2": "SecretPassword1",
             "date_of_birth": "5/4/2002",

@@ -5,11 +5,11 @@
 <div class="card">
     <div class="card-header">
         <div class="col-4">
-            <img class="img-fluid img-circle account_img" src={{ NewUser.profile.image.url }} alt="profile picture">
+            <img class="img-fluid img-circle account_img" src={{ User.profile.image.url }} alt="profile picture">
         </div>
         <div class="col-8">
-            <h3>{{ NewUser.first_name }} {{ NewUser.last_name }}</h3>
-            <P>{{ NewUser.email }}</P>
+            <h3>{{ User.firstname }} {{ User.lastname }}</h3>
+            <P>{{ User.email }}</P>
         </div>
     </div>
     <div class="card-body">

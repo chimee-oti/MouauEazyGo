@@ -14,9 +14,9 @@ class TestUserRegistrationView(TestCase):
 
         cls.form_data = {
             "email": "test@gmail.com",
-            "user_name": "myusername",
-            "first_name": "myfirstname",
-            "last_name": "mylastname",
+            "username": "myusername",
+            "firstname": "myfirstname",
+            "lastname": "mylastname",
             "password1": "SecretPassword1",
             "password2": "SecretPassword1",
             "date_of_birth": "3/3/5223",
@@ -38,7 +38,7 @@ class TestViewGetMethodsNoLogin(TestCase):
 
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(self.response, 'user/login.html')
-    
+
 
 class TestViewGetMethodsLogin(TestCase):
 
@@ -47,8 +47,6 @@ class TestViewGetMethodsLogin(TestCase):
         User = get_user_medel()
         user = User.objects.create()
         self.user_update = reverse('user_update')
-
-
 
     def test_user_update_view_get(self):
         self.response = self.client.get(self.user_update)
