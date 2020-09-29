@@ -1,4 +1,9 @@
-home page
-login or sign in page
-sign up or register page
-user profile dashboard
+note: more features will still be added to pages that you have already created as we progress, keep that in mind. 
+
+1. home page
+2. login or sign in page
+3. sign up or register page
+4. user profile dashboard 
+    the user has the following features: 
+    email, first name, last name, username, date of birth. for now
+5. user profile update view if someone wants up date their profile wants up date their profile
