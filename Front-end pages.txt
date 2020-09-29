@@ -1,0 +1,4 @@
+home page
+login or sign in page
+sign up or register page
+user profile dashboard
