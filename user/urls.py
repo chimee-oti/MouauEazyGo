@@ -3,6 +3,10 @@ from user import views as user_views
 
 
 urlpatterns = [
+ 
+    path('profile/<int:pk>/',
+         user_views.detail_view.as_view(), name="profile_detail"),
+ 
     path('profile/<int:pk>/',
          user_views.update_view.as_view(), name="profile_update"),
 

@@ -54,3 +54,5 @@ class TestViewGetMethodsLogin(TestCase):
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(
             self.response, 'user/user_update_form.html', 'user/profile_user_update_form.html')
+
+    def use

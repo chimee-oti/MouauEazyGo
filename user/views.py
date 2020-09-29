@@ -9,7 +9,7 @@ from user.forms import UserRegistrationForm, ProfileForm, UserForm
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from user.muiltiform import MultiFormsView
 
 
@@ -30,11 +30,11 @@ class user_register_view(CreateView):
         return reverse('profile')
 
 
-class update_view(MultiFormsView):
+class update_view(LoginRequiredMixin, UserPassesTestMixin, MultiFormsView):
     template_name = "user/profile_update.html"
     form_classes = {'uForm': UserForm,
                     'pForm': ProfileForm}
-    success_url = reverse_lazy("profile_update")
+    success_url = reverse_lazy("profile_detail")
 
     def get_uForm_initial(self):
         user = self.request.user
@@ -71,9 +71,18 @@ class update_view(MultiFormsView):
     def profile_form_valid(self, form):
         user = form.save(self.request)
         return form.pForm(self.request, user, self.get_success_url())
+        
+    def test_func(self):
+        user = self.request.user 
+        search_user = User.objects.get(pk=self.kwargs['pk'])
+        if search_user == user:
+            return true
+        else
+            redirect(reverse('profile_detail' user.id))
+            return false
 
 
-class profile_detail_view(LoginRequiredMixin, DetailView):
+class profile_detail_view(DetailView):
     template_name = "user/profile_detail.html"
     model = Profile
 
