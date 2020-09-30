@@ -19,9 +19,7 @@ class TestUserRegistrationForm(TestCase):
             "password1": "SecretPassword1",
             "password2": "SecretPassword1",
             "date_of_birth": "5/4/2002",
-            "country": "Nigeria",
             "image": self.img,
-            "about": "This is the fucking about"
         })
 
         self.assertTrue(form.is_valid())

@@ -5,9 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 class UserRegistrationForm(UserCreationForm):
     date_of_birth = forms.DateField(required=True)
-    country = forms.CharField(max_length=50, required=True)
     image = forms.ImageField(required=False)
-    about = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
         model = User
@@ -21,9 +19,7 @@ class UserRegistrationForm(UserCreationForm):
         user = super(UserRegistrationForm, self).save(commit=True)
         user.save()
         profile, created = Profile.objects.get_or_create(user=user)
-        profile.about = self.cleaned_data['about']
         profile.date_of_birth = self.cleaned_data['date_of_birth']
-        profile.country = self.cleaned_data['country']
         profile.image = self.cleaned_data['image']
         profile.save()
         return user, profile
@@ -32,7 +28,7 @@ class UserRegistrationForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'country', 'about', 'image', ]
+        fields = ['date_of_birth', 'image', ]
 
 
 class UserForm(forms.ModelForm):

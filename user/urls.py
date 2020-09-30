@@ -3,12 +3,15 @@ from user import views as user_views
 
 
 urlpatterns = [
- 
+
+    path('', user_views.user_profile_detail.as_view(),
+         name="user_profile_detail"),
+
     path('profile/<int:pk>/',
-         user_views.detail_view.as_view(), name="profile_detail"),
- 
-    path('profile/<int:pk>/',
-         user_views.update_view.as_view(), name="profile_update"),
+         user_views.profile_detail_view.as_view(), name="profile_detail"),
+
+    path('profile/update/<int:pk>/',
+         user_views.profile_update_view.as_view(), name="profile_update"),
 
     path('login/', user_views.login_view.as_view(), name="login"),
 

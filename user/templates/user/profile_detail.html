@@ -1,12 +1,28 @@
-{% extends "user/profile.html" %}
-{% block profile %}
+{% extends "user/base.html" %}
+{% block content %}
 
-# lists out all the fields of the profile model
-{% for f in profile.user.fields %}
-<section class="">
-    <h2 class="">{{ f.name }}</h2>
-    <p>{{ f.value }}</p>
-</section>
-{% endfor %}
 
-{% endblock profile%}
+<div class="card">
+    <div class="card-header">
+        <div class="col-4">
+            <img class="img-fluid img-circle account_img" src={{ User.profile.image.url }} alt="profile picture">
+        </div>
+        <div class="col-8">
+            <h3>{{ user.firstname }} {{ user.lastname }}</h3>
+            <P>{{ user.email }}</P>
+        </div>
+    </div>
+    <div class="card-body">
+        {# lists out all the fields of the profile model #}
+        {% for f in user.profile.fields %}
+        <section class="">
+            <h2 class="">{{ f.name }}</h2>
+            <p>{{ f.value }}</p>
+        </section>
+        {% endfor %}
+        <a href="{% url 'user_profile_detail' %}" class="btn btn-info">Update</a>
+
+    </div>
+</div>
+
+{% endblock %}

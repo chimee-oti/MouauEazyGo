@@ -133,7 +133,7 @@ MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = reverse_lazy('profile_update user.id')
+LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
 LOGIN_URL = 'user/login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
