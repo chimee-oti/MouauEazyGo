@@ -11,13 +11,12 @@
             <h3>{{ user.firstname }} {{ user.lastname }}</h3>
             <P>{{ user.email }}</P>
         </div>
-
     </div>
     <div class="card-body">
         <section class="">
             <p class="">{{ user.profile.date_of_birth }}</p>
         </section>
-        <a href="{% url 'profile_update' user.id %}" class="btn btn-info">Update</a>
+        <a href="{% url 'profile_update' %}" class="btn btn-info">Update</a>
 
     </div>
 </div>

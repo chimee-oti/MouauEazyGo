@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.shortcuts import reverse
 
 
 class CustomAccountManager(BaseUserManager):
@@ -61,3 +62,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user}'s profile"
+
+    def get_absolute_url(self):
+        return reverse("profile_detail", kwargs={pk: self.user.id})

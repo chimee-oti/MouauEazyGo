@@ -4,3 +4,4 @@ htmlcov/
 coverage.xml
 *.cover
 __pycache__
+profile_pics

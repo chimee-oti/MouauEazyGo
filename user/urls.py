@@ -10,8 +10,10 @@ urlpatterns = [
     path('profile/<int:pk>/',
          user_views.profile_detail_view.as_view(), name="profile_detail"),
 
-    path('profile/update/<int:pk>/',
-         user_views.profile_update_view.as_view(), name="profile_update"),
+    path('profile/update/', user_views.update_class.as_view(), name="profile_update"),
+
+    #     path('profile/update/<int:pk>/',
+    #          user_views.profile_update_view.as_view(), name="profile_update"),
 
     path('login/', user_views.login_view.as_view(), name="login"),
 

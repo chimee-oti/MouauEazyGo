@@ -1,98 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 from user.models import Profile, User
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.base import View
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from user.forms import UserRegistrationForm, ProfileForm, UserForm
+from user.forms import UserRegistrationForm, ProfileUpdateForm, UserUpdateForm
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from user.muiltiform import MultiFormsView
+from django.contrib import messages
+from user.mixins import Update_view
 
 
 class user_register_view(CreateView):
     template_name = "user/register.html"
     form_class = UserRegistrationForm
+    success_url = reverse_lazy('user_profile_detail')
 
-    # login user if form is valid and form data has been saved
     def form_valid(self, form):
-        self.object = form.save()
+        self.user = form.save()
         if self.request.user is not None:
-            logout(request)
-        new_user = authenticate(
-            email=form.cleaned_data['email'], password=form.cleaned_data['password1'], )
-        login(self.request, new_user)
-        return super().form_valid(form)
-
-    # direct the user to their profile page after registration
-    def get_success_url(self):
-        return reverse('user_profile_detail')
+            logout(self.request)
+        login(self.request, self.user)
+        return redirect(self.success_url)
 
 
-class profile_update_view(LoginRequiredMixin, UserPassesTestMixin, MultiFormsView):
+class update_class(Update_view):
+    """inheriting the main deadly mixin I wrote"""
+    success_url = reverse_lazy('user_profile_detail')
     template_name = "user/profile_update.html"
-    form_classes = {'uForm': UserForm,
-                    'pForm': ProfileForm}
-    success_url = reverse_lazy("user_profile_detail")
-
-    def get_uForm_initial(self):
-        user = self.request.user
-        return {'email': user.email,
-                'username': user.username,
-                'firstname': user.firstname,
-                'lastname': user.lastname}
-
-    def get_pForm_initial(self):
-        profile = self.request.user.profile
-        return {'image': profile.image,
-                'date_of_birth': profile.date_of_birth}
-
-    def get_context_data(self, **kwargs):
-        context = super(profile_update_view, self).get_context_data(**kwargs)
-        context.update({"some context data": "data",
-                        "some other context data": "another data"})
-        return context
-
-    def user_form_valid(self, form):
-        user = self.request.user
-        if form.cleaned_data['username']:
-            user.username = form.cleaned_data['username']
-        if form.cleaned_data['firstname']:
-            user.firstname = form.cleaned_data['firstname']
-        if form.cleaned_data['lastname']:
-            user.lastname = form.cleaned_data['lastname']
-        user.save()
-        user = form.save(self.request)
-        return form.uForm(self.request, user, self.get_success_url())
-
-    def profile_form_valid(self, form):
-        profile = self.request.user.profile
-        if form.cleaned_data['image']:
-            profile.image = form.cleaned_data['image']
-        if form.cleaned_data['date_of_birth']:
-            profile.date_of_birth = form.cleaned_data['date_of_birth']
-        profile.save()
-        user = form.save(self.request)
-        return form.pForm(self.request, user, self.get_success_url())
-
-    def test_func(self):
-        user = self.request.user
-        search_user = User.objects.get(pk=self.kwargs['pk'])
-        if search_user == user:
-            return True
-        else:
-            redirect(reverse('profile_detail', kwargs={pk: user.id}))
-            return False
-
-    # def get_success_url(self, form_name=None):
-    #     user = self.request.user
-    #     if form_name == "uForm" or form_name == "pForm":
-    #         return reverse('user_profile_detail')
-    #     return self.success_urls.get(form_name, self.success_url)
 
 
 class profile_detail_view(DetailView):

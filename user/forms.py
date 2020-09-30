@@ -9,29 +9,28 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'firstname', 'lastname', ]
+        fields = ['email', 'username', 'firstname',
+                  'lastname', 'password1', 'password2']
 
     # save profile info as well as the user info in the form
-    def save(self, commit=True):
-        if not commit:
-            raise NotImplementedError(
-                "Can't create User and UserProfile without database save")
-        user = super(UserRegistrationForm, self).save(commit=True)
+    def save(self, commit=False):
+        user = super(UserRegistrationForm, self).save(commit=False)
+        user.set_password(user.password)
         user.save()
         profile, created = Profile.objects.get_or_create(user=user)
         profile.date_of_birth = self.cleaned_data['date_of_birth']
         profile.image = self.cleaned_data['image']
         profile.save()
-        return user, profile
+        return user
 
 
-class ProfileForm(forms.ModelForm):
+class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['date_of_birth', 'image', ]
 
 
-class UserForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'firstname', 'lastname', ]
