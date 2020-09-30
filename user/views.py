@@ -21,6 +21,8 @@ class user_register_view(CreateView):
     # login user if form is valid and form data has been saved
     def form_valid(self, form):
         self.object = form.save()
+        if self.request.user is not None:
+            logout(request)
         new_user = authenticate(
             email=form.cleaned_data['email'], password=form.cleaned_data['password1'], )
         login(self.request, new_user)
@@ -35,7 +37,7 @@ class profile_update_view(LoginRequiredMixin, UserPassesTestMixin, MultiFormsVie
     template_name = "user/profile_update.html"
     form_classes = {'uForm': UserForm,
                     'pForm': ProfileForm}
-    success_url = reverse_lazy("user_profile-detail")
+    success_url = reverse_lazy("user_profile_detail")
 
     def get_uForm_initial(self):
         user = self.request.user
@@ -85,6 +87,12 @@ class profile_update_view(LoginRequiredMixin, UserPassesTestMixin, MultiFormsVie
         else:
             redirect(reverse('profile_detail', kwargs={pk: user.id}))
             return False
+
+    # def get_success_url(self, form_name=None):
+    #     user = self.request.user
+    #     if form_name == "uForm" or form_name == "pForm":
+    #         return reverse('user_profile_detail')
+    #     return self.success_urls.get(form_name, self.success_url)
 
 
 class profile_detail_view(DetailView):

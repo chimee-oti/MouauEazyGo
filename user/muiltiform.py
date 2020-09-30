@@ -36,7 +36,8 @@ class MultiFormMixin(ContextMixin):
         if hasattr(self, form_valid_method):
             return getattr(self, form_valid_method)(forms[form_name])
         else:
-            return HttpResponseRedirect(self.get_success_url(form_name))
+            return HttpResponseRedirect(self.
+            get_success_url(form_name))
 
     def forms_invalid(self, forms):
         return self.render_to_response(self.get_context_data(forms=forms))
