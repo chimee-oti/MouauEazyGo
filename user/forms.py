@@ -12,17 +12,6 @@ class UserRegistrationForm(UserCreationForm):
         fields = ['email', 'username', 'firstname',
                   'lastname', 'password1', 'password2']
 
-    # save profile info as well as the user info in the form
-    def save(self, commit=False):
-        user = super(UserRegistrationForm, self).save(commit=False)
-        user.set_password(user.password)
-        user.save()
-        profile, created = Profile.objects.get_or_create(user=user)
-        profile.date_of_birth = self.cleaned_data['date_of_birth']
-        profile.image = self.cleaned_data['image']
-        profile.save()
-        return user
-
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:

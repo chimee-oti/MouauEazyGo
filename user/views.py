@@ -13,19 +13,23 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from user.mixins import Update_view
+from user.mixins import Update_view, UserMustBeAnoynmousMixin
 
 
-class user_register_view(CreateView):
+class user_register_view(UserMustBeAnoynmousMixin, CreateView):
     template_name = "user/register.html"
     form_class = UserRegistrationForm
     success_url = reverse_lazy('user_profile_detail')
 
     def form_valid(self, form):
-        self.user = form.save()
-        if self.request.user is not None:
-            logout(self.request)
-        login(self.request, self.user)
+        user = User.objects.create_user(email=form.cleaned_data['email'],
+                                        username=form.cleaned_data['username'],
+                                        firstname=form.cleaned_data['firstname'],
+                                        lastname=form.cleaned_data['lastname'],
+                                        password=form.cleaned_data['password1'])
+        user = authenticate(email=user.email, password=user.password)
+        if user is not None:
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect(self.success_url)
 
 
@@ -45,31 +49,10 @@ class user_profile_detail(LoginRequiredMixin, DetailView):
     model = Profile
 
     def get_object(self, queryset=None):
-        """
-        Return the object the view is displaying.
-        Require `self.queryset` and a `pk` or `slug` argument in the URLconf.
-        Subclasses can override this to return any object.
-        """
-        # Use a custom queryset if provided; this is required for subclasses
-        # like DateDetailView
         if queryset is None:
             queryset = self.get_queryset()
-        # Next, try looking up by primary key.
-        # pk is now that of the current logged in user
         pk = self.request.user.id
-        slug = self.kwargs.get(self.slug_url_kwarg)
-        if pk is not None:
-            queryset = queryset.filter(pk=pk)
-        # Next, try looking up by slug.
-        if slug is not None and (pk is None or self.query_pk_and_slug):
-            slug_field = self.get_slug_field()
-            queryset = queryset.filter(**{slug_field: slug})
-        # If none of those are defined, it's an error.
-        if pk is None and slug is None:
-            raise AttributeError(
-                "Generic detail view %s must be called with either an object "
-                "pk or a slug in the URLconf." % self.__class__.__name__
-            )
+        queryset = queryset.filter(pk=pk)
         try:
             # Get the single item from the filtered queryset
             obj = queryset.get()

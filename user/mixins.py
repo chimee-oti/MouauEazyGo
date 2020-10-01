@@ -1,7 +1,15 @@
 from django.views.generic.edit import FormView
 from user.forms import UserUpdateForm, ProfileUpdateForm
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 
+
+class UserMustBeAnoynmousMixin(object):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            logout(request)
+        return super(UserMustBeAnoynmousMixin, self).dispatch(request, *args, **kwargs)
 
 class Update_view(FormView):
 
