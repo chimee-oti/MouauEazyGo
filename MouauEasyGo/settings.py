@@ -32,20 +32,30 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'home.apps.HomeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # custom apps
     'chat.apps.ChatConfig',
     'user.apps.UserConfig',
     'blog.apps.BlogConfig',
+    'home.apps.HomeConfig',
+
+    # third party apps
     'crispy_forms',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -62,7 +72,9 @@ ROOT_URLCONF = 'MouauEasyGo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.normpath(os.path.join(BASE_DIR, 'templates')),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +88,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'MouauEasyGo.wsgi.application'
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 
 # Database
@@ -133,7 +151,7 @@ MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
+# LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 LOGIN_URL = reverse_lazy('login')
 
@@ -149,4 +167,53 @@ DEFAULT_FROM_EMAIL = "elishae621@gmail.com"
 
 AUTH_USER_MODEL = 'user.User'
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/email/'
+
+ACCOUNT_FORMS = {
+    'signup': 'YourProject.forms.CustomSignupForm',
+}
+
+SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_STORE_TOKENS = False
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'js_sdk',
+        'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'first_name',
+            'last_name',
+            'middle_name',
+            'name',
+            'name_format',
+            'picture',
+            'short_name'
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'en_US',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v8.0',
+    },
+
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+

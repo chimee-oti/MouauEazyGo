@@ -2,13 +2,13 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-<form method="post" action="{% url 'register' %}">
+<form method="post">
     {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="Register">
+    {{ form|as-p }}
+    <button class="btn btn-outline-info" type="submit">Register</button>
 </form>
 
 
-<p><a href="{% url 'login' %}">Have an account? Log in</a></p>
+<p class="text-muted underline p-4"><a href="{% url 'login' %}">Have an account? Log in</a></p>
 
 {% endblock %}
