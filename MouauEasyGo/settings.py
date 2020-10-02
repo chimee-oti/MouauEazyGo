@@ -40,17 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    # custom apps
+    # local apps
     'chat.apps.ChatConfig',
     'user.apps.UserConfig',
     'blog.apps.BlogConfig',
     'home.apps.HomeConfig',
 
-    # third party apps
+    # 3rd-party apps
     'crispy_forms',
+
+    # allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    # allauth providers
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 ]
@@ -151,7 +155,7 @@ MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
+LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 LOGIN_URL = reverse_lazy('login')
 
@@ -167,16 +171,23 @@ DEFAULT_FROM_EMAIL = "elishae621@gmail.com"
 
 AUTH_USER_MODEL = 'user.User'
 
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400
-ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/accounts/email/'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = None
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 1000
+ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_SESSION_REMEMBER = None
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+# ACCOUNT_SIGNUP_FORM_CLASS = this should represent additional details for signup form, check docs
+ACCOUNT_USERNAME_MIN_LENGTH = 3
+
 
 ACCOUNT_FORMS = {
-    'signup': 'YourProject.forms.CustomSignupForm',
+    'signup': 'user.forms.CustomSignupForm',
 }
 
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
@@ -185,7 +196,7 @@ SOCIALACCOUNT_STORE_TOKENS = False
 
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
-        'METHOD': 'js_sdk',
+        'METHOD': 'oauth2',
         'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
         'SCOPE': ['email', 'public_profile'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
