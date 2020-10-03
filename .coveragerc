@@ -4,6 +4,6 @@ omit =
     *migrations/*,
     *settings*,
     *tests/*,
-    *urls.py,
     *wsgi.py,
+    *asgi.py,
     manage.py
