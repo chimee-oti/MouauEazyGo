@@ -6,6 +6,7 @@ from MouauEasyGo.settings import INSTALLED_APPS, AUTH_USER_MODEL
 from django.db import transaction
 from django.shortcuts import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from user.tests.factories import UserFactory, ProfileFactory
 
 
 class TestSettings(TestCase):
@@ -146,46 +147,17 @@ class TestUserCreateUser(TestCase):
 
 
 class TestProfile(TestCase):
-    
-    def setUp(self):
-        self.email = "test@gmail.com"
-        self.username = "Nicknameuser"
-        self.firstname = "Nicknamefirst"
-        self.lastname = "Nicknamelast"
-        self.password = "secretpassword"
-        self.date_of_birth = "2002-04-05"
 
-        self.user = User.objects.create_user(
-            email=self.email,
-            username=self.username,
-            firstname=self.firstname,
-            lastname=self.lastname,
-            password=self.password
-        )
-     
-        self.small_jpg = (
-            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
-            b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
-            b'\x02\x4c\x01\x00\x3b'
-        )
-        self.uploadedimage = SimpleUploadedFile(name='small.jpg', content=self.small_jpg, content_type='image/jpg')
-        self.user.profile.image=self.uploadedimage
-        self.user.profile.date_of_birth=self.date_of_birth
-        self.user.profile.save()
-        
+    def setUp(self):
+        self.user1 = UserFactory()
+
     def test_image_location(self):
-        assert self.user.profile.image.url == r'/media/profile_pics/small.jpg'
-        
-    def test_default_image(self):
-        self.pro = Profile.objects.create(user=self.user, date_of_birth=self.date_of_birth)
-        self.pro.save()
-        
-        assert self.pro.image.url == 'media/default.jpg'
-        
+        assert self.user1.profile.image.url == f'/media/{self.user1.profile.image.name}'
+
     def test_str_object_return_user_profile(self):
-        assert str(self.user.profile) == f"{self.user.username}'s profile"
-        
+        assert str(self.user1.profile) == f"{self.user1.username}'s profile"
+
     def test_get_absolute_url(self):
-        self.detail_url = reverse('profile_detail', kwargs={pk: self.user.id})
-        
-        assert self.user.profile.get_absolute_url() == self.detail_url
+        self.detail_url = '/user/profile/1'
+
+        assert self.user1.profile.get_absolute_url() == self.detail_url

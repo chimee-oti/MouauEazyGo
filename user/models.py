@@ -28,7 +28,8 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError(_('You must provide an email address'))
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username,   firstname=firstname, lastname=lastname, **other_fields)
+        user = self.model(email=email, username=username,
+                          firstname=firstname, lastname=lastname, **other_fields)
         user.set_password(password)
         user.save()
         return user
@@ -55,12 +56,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(default="default.jpg",
-                              upload_to="profile_pics/")
+    image = models.ImageField(default="default.jpg", upload_to="profile_pics/")
     date_of_birth = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.user}'s profile"
 
     def get_absolute_url(self):
-        return reverse("profile_detail", kwargs={pk: self.user.id})
+        return f'/user/profile/{self.pk}'

@@ -7,7 +7,7 @@ from django.contrib.auth import logout
 class UserMustBeAnoynmousMixin(object):
     
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if request.user.is_authenticated:
             logout(request)
         return super(UserMustBeAnoynmousMixin, self).dispatch(request, *args, **kwargs)
 

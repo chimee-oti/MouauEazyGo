@@ -17,40 +17,11 @@ from user.mixins import Update_view, UserMustBeAnoynmousMixin
 from django.contrib.auth.forms import UserCreationForm
 
 
-def user_register_view(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            # email = form.cleaned_data.get('email')
-            # firstname = form.cleaned_data.get('firstname')
-            # lastname = form.cleaned_data.get('lastname')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('user_profile_detail')
-    else:
-        form = UserRegistrationForm()
-    return render(request, 'user/register.html', {'form': form})
+class user_register_view(DetailView):
+    """just filling in"""
 
 
-# class user_register_view(UserMustBeAnoynmousMixin, CreateView):
-#     template_name = "user/register.html"
-#     form_class = UserRegistrationForm
-#     success_url = reverse_lazy('user_profile_detail')
-
-#     def form_valid(self, form):
-#         user = User.objects.create_user(email=form.cleaned_data['email'],
-#                                         username=form.cleaned_data['username'],
-#                                         firstname=form.cleaned_data['firstname'],
-#                                         lastname=form.cleaned_data['lastname'],
-#                                         password=form.cleaned_data['password1'])
-#         user = authenticate(email=user.email, password=user.password)
-#         if user is not None:
-#             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#         return redirect(self.success_url)
-
-
-class update_class(Update_view):
+class update_profile(LoginRequiredMixin, Update_view):
     """inheriting the main deadly mixin I wrote"""
     success_url = reverse_lazy('user_profile_detail')
     template_name = "user/profile_update.html"
@@ -61,7 +32,7 @@ class profile_detail_view(DetailView):
     model = Profile
 
 
-class user_profile_detail(LoginRequiredMixin, DetailView):
+class user_profile_detail_view(LoginRequiredMixin, DetailView):
     template_name = "user/profile_detail.html"
     model = Profile
 
