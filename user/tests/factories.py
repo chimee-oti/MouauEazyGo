@@ -14,6 +14,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
+    id = 1
     email = faker.email()
     username = faker.user_name()
     firstname = faker.first_name()

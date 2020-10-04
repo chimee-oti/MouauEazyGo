@@ -1,7 +1,8 @@
 from django.views.generic.edit import FormView
 from user.forms import UserUpdateForm, ProfileUpdateForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, reverse
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class UserMustBeAnoynmousMixin(object):
@@ -42,3 +43,11 @@ class Update_view(FormView):
             kwargs['pForm'] = ProfileUpdateForm(
                 instance=self.request.user.profile)
         return kwargs
+
+
+class UserAlreadyLoggedInTestMixin(UserPassesTestMixin):
+    def dispatch(self, request, *args, **kwargs):
+        user_test_result = self.get_test_func()()
+        if not user_test_result:
+            return redirect(reverse('user_profile_detail'))
+        return super().dispatch(request, *args, **kwargs)

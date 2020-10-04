@@ -26,7 +26,7 @@ SECRET_KEY = 'dx38m*ms$9!df$x1mt_ono@pe+h71h0^ll&45k0ynh#h(nxwd^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['testserver', 'localhost', ]
 
 
 # Application definition
@@ -227,4 +227,3 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
