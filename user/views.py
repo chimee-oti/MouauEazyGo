@@ -13,14 +13,24 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from user.mixins import Update_view, UserMustBeAnoynmousMixin, UserAlreadyLoggedInTestMixin
+from user.mixins import Update_view, UserAlreadyLoggedInTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 
 
-class user_register_view(DetailView):
-    """just filling in"""
+class user_register_view(CreateView):
+    template_name = "user/register.html"
+    form_class = UserRegistrationForm
+    model = User
+
+    def form_valid(self, form):
+        self.object = form.save()
+        profile = Profile.objects.filter(user=self.object).first()
+        profile.date_of_birth = form.cleaned_data['date_of_birth']
+        profile.image = form.cleaned_data['image']
+        profile.save()
+        return super(user_register_view, self).form_valid(form)
 
 
 class update_profile(LoginRequiredMixin, Update_view):

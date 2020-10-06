@@ -59,13 +59,17 @@ class TestUserModel(TestCase):
         )
         self.assertEqual(str(user), user.username)
 
+
 class TestProfileModel(TestCase):
     def setUp(self):
         self.faker = Faker()
-        self.user = User(email=self.faker.email(), username=self.faker.user_name(), firstname=self.faker.first_name(), lastname=self.faker.last_name())
+        self.user = User.objects.create(email=self.faker.email(), username=self.faker.user_name(
+        ), firstname=self.faker.first_name(), lastname=self.faker.last_name())
 
     def test_str_function(self):
-        self.assertEqual(str(self.user.profile), "user's profile")
+        self.assertEqual(str(self.user.profile),
+                         f"{self.user.username}'s profile")
 
     def test_get_absolute_url(self):
-        self.assertEqual(get_absolute_url(self.user.profile), reverse('profile_detial', kwargs={'pk': self.user.pk}))
+        self.assertEqual(self.user.profile.get_absolute_url(), reverse(
+            'profile_detail', kwargs={'pk': self.user.pk}))

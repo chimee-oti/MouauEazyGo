@@ -63,4 +63,4 @@ class Profile(models.Model):
         return f"{self.user}'s profile"
 
     def get_absolute_url(self):
-        return f'user/profile/{self.pk}'
+        return f'/user/profile/{self.pk}/'

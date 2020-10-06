@@ -5,13 +5,6 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 
-class UserMustBeAnoynmousMixin(object):
-    
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            logout(request)
-        return super(UserMustBeAnoynmousMixin, self).dispatch(request, *args, **kwargs)
-
 class Update_view(FormView):
 
     def post(self, request, *args, **kwargs):

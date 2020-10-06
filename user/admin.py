@@ -28,11 +28,8 @@ class UserAdminConfig(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'username', 'firstname',)}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
-        # ('Personal', {'fields': ('about',)}),
     )
-    # formfield_overrides = {
-    #     User.about: {'widget': forms.Textarea(attrs={'rows': 10, 'cols': 40})},
-    # }
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -47,3 +44,4 @@ class UserAdminConfig(UserAdmin):
 
 
 admin.site.register(User, UserAdminConfig)
+admin.site.register(Profile)

@@ -21,7 +21,7 @@ class Test_UserRegistrationForm(TestCase):
         self.form = UserRegistrationForm(data=self.data)
 
     def test_form_is_valid(self):
-        assert self.form.is_valid()
+        self.assertTrue(self.form.is_valid())
 
 
 class TestProfileUpdateForm(TestCase):

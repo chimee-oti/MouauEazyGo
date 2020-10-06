@@ -10,7 +10,9 @@ from django.test import RequestFactory, TestCase, Client
 import pytest
 from user.models import User, Profile
 from django.http import Http404
-pytestmark = pytest.mark.django_db
+
+
+class 
 
 
 class TestUserProfileDetailView(TestCase):
@@ -64,3 +66,5 @@ class TestLoginView(TestCase):
         response = views.login_view.as_view()(request)
 
         self.assertEqual(response.status_code, 200)
+
+    
