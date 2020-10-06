@@ -4,7 +4,7 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form|as-p }}
+    {{ form|crispy }}
     <button id="register" class="btn btn-outline-info" type="submit">Register</button>
 </form>
 

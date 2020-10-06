@@ -14,19 +14,6 @@ class UserRegistrationForm(UserCreationForm):
                   'lastname', 'password1', 'password2', 'date_of_birth', 'image']
 
 
-# class CustomSignupForm(SignupForm):
-#     username = forms.CharField(max_length=30, label='Username')
-#     firstname = forms.CharField(max_length=30, label='First Name')
-#     lastname = forms.CharField(max_length=30, label='Last Name')
-
-#     def signup(self, request, user):
-#         user.username = self.cleaned_data['username']
-#         user.firstname = self.cleaned_data['firstname']
-#         user.lastname = self.cleaned_data['lastname']
-#         user.save()
-#         return user
-
-
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile

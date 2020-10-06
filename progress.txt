@@ -1,2 +1,1 @@
-I will continue with the user app after I watch videos on
-using muiltiple videos
+login in user after registration

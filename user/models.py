@@ -52,6 +52,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+    def get_absolute_url(self):
+        return f'/user/profile/{self.pk}/'
+
 
 class Profile(models.Model):
     user = models.OneToOneField(

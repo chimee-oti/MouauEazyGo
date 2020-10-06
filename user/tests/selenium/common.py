@@ -1,55 +1,57 @@
 from selenium import webdriver
 from user.tests.factories import UserFactory
 from django.urls import reverse
+import time
 
 
 class Common(object):
-    def __init__(self):
-        self.driver = webdriver.Chrome(
-            executable_path="E:\PC PROGRAMS\chromedriver_win32/chromedriver")
-        self.user = UserFactory()
 
-    def Register(self):
-        driver = self.driver
-        driver.get("http://localhost:8000" + reverse('register'))
-        email_field = driver.find_element_by_name("email")
-        email_field.clear()
-        email_field.send_keys(self.user.email)
-        username_field = driver.find_element_by_name("username")
-        username_field.clear()
-        username_field.send_keys(self.user.username)
-        firstname_field = driver.find_element_by_name("firstname")
-        firstname_field.clear()
-        firstname_field.send_keys(self.user.firstname)
-        lastname_field = driver.find_element_by_name("lastname")
-        lastname_field.clear()
-        lastname_field.send_keys(self.user.lastname)  
-        password1_field = driver.find_element_by_name("password1")
-        password1_field.clear()
-        password1_field.send_keys(self.user.password)
-        password2_field = driver.find_element_by_name("password2")
-        password2_field.clear()
-        password2_field.send_keys(self.user.password)
-        date_of_birth_field = driver.find_element_by_name("birth_of_birth")
-        date_of_birth_field.clear()
-        date_of_birth_field.send_keys(self.user.profile.date_of_birth)
-        image_field = driver.find_element_by_name("image")
-        image_field.clear()
-        image_field.send_keys(self.user.profile.image)
-        submit_button = driver.find_element_by_id("register")
-        submit_button.click()
-        return self.user
-    
-    
-    def Login(self):    
-        driver = self.driver
+    def Register(driver, user):
+        driver.get("http://localhost:8080" + reverse('register'))
+        time.sleep(2)
+        
+        driver.find_element_by_id("id_email").click()
+        driver.find_element_by_id("id_email").clear()
+        driver.find_element_by_id("id_email").send_keys(user.email)
+        
+        driver.find_element_by_id("id_username").click()
+        driver.find_element_by_id("id_username").clear()
+        driver.find_element_by_id("id_username").send_keys(user.username)
+        
+        driver.find_element_by_id("id_firstname").click()
+        driver.find_element_by_id("id_firstname").clear()
+        driver.find_element_by_id("id_firstname").send_keys(user.firstname)
+        
+        driver.find_element_by_id("id_lastname").click()
+        driver.find_element_by_id("id_lastname").clear()
+        driver.find_element_by_id("id_lastname").send_keys(user.lastname)
+        
+        driver.find_element_by_id("id_password1").click()
+        driver.find_element_by_id("id_password1").clear()
+        driver.find_element_by_id("id_password1").send_keys(user.password)
+        
+        driver.find_element_by_id("id_password2").click()
+        driver.find_element_by_id("id_password2").clear()
+        driver.find_element_by_id("id_password2").send_keys(user.password)
+        
+        driver.find_element_by_id("id_date_of_birth").click()
+        driver.find_element_by_id("id_date_of_birth").clear()
+        driver.find_element_by_id("id_date_of_birth").send_keys(str(user.profile.date_of_birth))
+        
+        driver.find_element_by_id("id_image").send_keys(r"C:\Users\Elisha\Pictures\Screenshots\Screenshot (16).png")
+        
+        driver.find_element_by_id("register").click()
+        time.sleep(10)
+        return user
+
+    def Login(driver, user):
         driver.get("http://localhost:8080" + reverse('login'))
         username_field = driver.find_element_by_name("username")
-        username_field.clear()
-        username_field.send_keys(self.user.username)
+        username_field.click()
+        username_field.send_keys(user.username)
         password_field = driver.find_element_by_name("password")
-        password_field.clear()
-        password_field.send_keys(self.user.password)
+        password_field.click()
+        password_field.send_keys(user.password)
         submit_button = driver.find_element_by_id("login")
         submit_button.click()
-        return self.user
+        return user

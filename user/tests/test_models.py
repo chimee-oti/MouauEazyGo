@@ -52,12 +52,16 @@ class TestCreateUser(TestCase):
 class TestUserModel(TestCase):
     def setUp(self):
         self.faker = Faker()
-
-    def test_str_function(self):
-        user = User(
+        self.user = User.objects.create(
             email=self.faker.email(), username=self.faker.user_name(), firstname=self.faker.first_name(), lastname=self.faker.last_name()
         )
-        self.assertEqual(str(user), user.username)
+
+    def test_str_function(self):
+        self.assertEqual(str(user), self.user.username)
+
+    def test_get_absolute_url(self):
+        self.assertEqual(self.user.get_absolute_url(), reverse(
+            'profile_detail', kwargs={'pk': self.user.pk}))
 
 
 class TestProfileModel(TestCase):
