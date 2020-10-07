@@ -13,15 +13,30 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from user.mixins import Update_view, UserAlreadyLoggedInTestMixin
+from user.mixins import Update_view
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 
 
-class user_register_view(CreateView):
-    template_name = "user/register.html"
-    form_class = UserRegistrationForm
+
+
+def user_register_view(request):
+    form = UserRegistrationForm(request.POST, request.FILES)
+    if form.is_valid():
+        user = form.save()
+        user.refresh_from_db()
+        user.profile.date_of_birth = form.cleaned_data.get('date_of_birth')
+        user.profile.image = form.cleaned_data.get('image')
+        user.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        # user = authenticate(username=username, password=password)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('user_profile_detail')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'user/register.html', {'form': form})
     
 
 class update_profile(LoginRequiredMixin, Update_view):
@@ -53,15 +68,8 @@ class user_profile_detail_view(LoginRequiredMixin, DetailView):
         return obj
 
 
-class login_view(UserAlreadyLoggedInTestMixin, auth_views.LoginView):
+class login_view(auth_views.LoginView):
     template_name = "user/login.html"
-
-    def test_func(self):
-        user = self.request.user
-        if not user.is_authenticated:
-            return True
-        if user.is_authenticated:
-            return False
 
 
 class logout_view(auth_views.LogoutView):

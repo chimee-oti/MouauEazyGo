@@ -38,9 +38,16 @@ class Update_view(FormView):
         return kwargs
 
 
-class UserAlreadyLoggedInTestMixin(UserPassesTestMixin):
-    def dispatch(self, request, *args, **kwargs):
-        user_test_result = self.get_test_func()()
-        if not user_test_result:
-            return redirect(reverse('user_profile_detail'))
-        return super().dispatch(request, *args, **kwargs)
+# class UserAlreadyLoggedInTestMixin(UserPassesTestMixin):
+#     def dispatch(self, request, *args, **kwargs):
+#         user_test_result = self.get_test_func()()
+#         if not user_test_result:
+#             return redirect(reverse('user_profile_detail'))
+#         return super().dispatch(request, *args, **kwargs)
+
+#     def test_func(self):
+#         user = self.request.user
+#         if not user.is_authenticated:
+#             return True
+#         if user.is_authenticated:
+#             return False

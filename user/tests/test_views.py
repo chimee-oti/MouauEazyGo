@@ -31,7 +31,7 @@ class TestRegisterView(TestCase):
         self.request = RequestFactory().post(self.url, data=self.data)
         
         self.request.user = self.user 
-        self.response = views.user_register_view.as_view()(self.request)
+        self.response = views.user_register_view(self.request)
         self.saved_user = User.objects.filter(username=self.user.username).first()
     
     

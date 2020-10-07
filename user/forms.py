@@ -5,9 +5,13 @@ from allauth.account.forms import SignupForm
 
 
 class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required= True)
+    firstname = forms.CharField(required=False)
+    lastname = forms.CharField(required=False)
     date_of_birth = forms.DateField(required=True)
     image = forms.ImageField(required=False)
-
+    
+    
     class Meta:
         model = User
         fields = ['email', 'username', 'firstname',

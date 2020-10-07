@@ -22,6 +22,6 @@ class TestUpdateViewMixin(TestCase):
         logged_user = Common.Login(driver=driver, user=registered_user)
         time.sleep(10)
         driver.get("http://localhost:8080" + reverse('profile_update'))
-        time.sleep(30)
+        time.sleep(5)
         driver.close()
         self.assertIn("MouauEasyGo", driver.title)

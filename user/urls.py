@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('logout/', user_views.logout_view.as_view(), name="logout"),
 
-    path('register/', user_views.user_register_view.as_view(), name="register"),
+    path('register/', user_views.user_register_view, name="register"),
 
     path('password-change', user_views.password_change_view.as_view(),
          name="password_change"),
