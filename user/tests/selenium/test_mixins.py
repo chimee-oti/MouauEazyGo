@@ -8,7 +8,7 @@ from user.tests.selenium.common import Common
 import time
 
 
-
+@pytest.mark.skip
 class TestUpdateViewMixin(TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome(
