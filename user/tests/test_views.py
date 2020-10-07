@@ -11,6 +11,7 @@ import pytest
 from user.models import User, Profile
 from django.http import Http404
 from user.forms import UserRegistrationForm
+from django.http import 
 
 
 class TestRegisterView(TestCase):
@@ -76,12 +77,22 @@ class TestUserProfileDetailView(TestCase):
 class TestLoginView(TestCase):
     def setUp(self):
         self.client = Client()
+        self.user = UserFactory()
+        self.path = reverse('login')
+
+    def tearDown(self):
+        self.client.logout()
+
+    def _get_token(self, url, data):
+        resp = self.client.get(url)
+        data['crsfmiddlewaretoken'] = resp.cookies['csrftoken'].value
+        return data
 
     def test_user_already_login_redirects(self):
-        user = UserFactory()
-        request = RequestFactory().post(
-            reverse('login'), {'username': user.username, 'password': user.password})
-        request.user = user
+        data = {'username': self.user.username, 'password': self.user.password}
+        data = self._get_token(self.path, data)
+        request = RequestFactory().post(self.path, data)
+        request.user = self.user
 
         self.assertTrue(request.user.is_authenticated)
         response = views.login_view.as_view()(request)
