@@ -10,11 +10,10 @@ class TestPostModel(TestCase):
         self.user = UserFactory()
         self.faker = Faker()
         self.post = Post.objects.create(title=self.faker.lexify(
-            '? ??? ??????'), content=self.faker.text(), author=self.user, date_posted=self.faker.date())
+            '? ??? ??????'), content=self.faker.text(), author=self.user, time_posted=self.faker.date_time_this_year())
 
     def test_str_function(self):
         self.assertEqual(str(self.post), self.post.title)
 
     def test_get_absolute_url(self):
-        self.assertEqual(self.post.get_absolute_url(), reverse(
-            'post-detail', kwargs={'pk': self.post.pk}))
+        self.assertEqual(self.post.get_absolute_url(), reverse('blog:post-detail', kwargs={'pk': self.post.pk}))

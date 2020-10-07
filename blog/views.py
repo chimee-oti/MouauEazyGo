@@ -1,17 +1,11 @@
-from django.views.generic import (
-    ListView,
-    DetailView,
-    CreateView,
-    UpdateView,
-    DeleteView,
-)
+from django.views import generic
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
-class PostListView(ListView):
+class PostListView(generic.ListView):
     model = Post
     template_name = 'blog/home.html'
     context_object_name = 'posts'
@@ -19,7 +13,7 @@ class PostListView(ListView):
     paginate_by = 5
 
 
-class UserPostListView(ListView):
+class UserPostListView(generic.ListView):
     model = Post
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
@@ -30,11 +24,11 @@ class UserPostListView(ListView):
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
-class PostDetailView(DetailView):
+class PostDetailView(generic.DetailView):
     model = Post
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, generic.CreateView):
     model = Post
     fields = ['title', 'content']
 
@@ -43,7 +37,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Post
     fields = ['title', 'content']
 
@@ -58,7 +52,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False
 
 
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Post
     success_url = '/'
 
@@ -69,8 +63,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
-def about(request):
-    context = {
-        'title': 'about'
-    }
-    return render(request, 'blog/about.html', context)
+class About(generic.TemplateView):
+	template_name = 'blog/about.html'
+	
+	def get_context_data(self, **kwargs):
+		context = super(About, self).get_context_data(**kwargs)
+		context['title'] = 'about'
+		return kwargs

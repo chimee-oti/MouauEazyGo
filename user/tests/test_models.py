@@ -57,7 +57,7 @@ class TestUserModel(TestCase):
         )
 
     def test_str_function(self):
-        self.assertEqual(str(user), self.user.username)
+        self.assertEqual(str(self.user), self.user.username)
 
     def test_get_absolute_url(self):
         self.assertEqual(self.user.get_absolute_url(), reverse(
