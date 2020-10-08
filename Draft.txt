@@ -44,6 +44,10 @@ b. Easyhelp pages where you can see people portfolio for different kind of help 
 
 c. Easymarket  for sells and business adverts but most popular products might be on the popular post but not too much.
 
+d. Easyride
+
+e. Articles 
+
 
 STATIC PAGES (this should be public) -----
 
