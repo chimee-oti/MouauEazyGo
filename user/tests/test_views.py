@@ -7,11 +7,10 @@ from user import views
 from django.urls import reverse
 from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase, Client
-import pytest
 from user.models import User, Profile
 from django.http import Http404
 from user.forms import UserRegistrationForm
-from django.http import 
+
 
 
 class TestRegisterView(TestCase):
@@ -73,30 +72,19 @@ class TestUserProfileDetailView(TestCase):
         with self.assertRaises(Http404):
             response = views.user_profile_detail_view.as_view()(request)
 
-
+    
 class TestLoginView(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = UserFactory()
-        self.path = reverse('login')
-
-    def tearDown(self):
-        self.client.logout()
-
-    def _get_token(self, url, data):
-        resp = self.client.get(url)
-        data['crsfmiddlewaretoken'] = resp.cookies['csrftoken'].value
-        return data
 
     def test_user_already_login_redirects(self):
-        data = {'username': self.user.username, 'password': self.user.password}
-        data = self._get_token(self.path, data)
-        request = RequestFactory().post(self.path, data)
-        request.user = self.user
+        user = UserFactory()
+        request = RequestFactory().post(
+            reverse('login'), {'username': user.username, 'password': user.password})
+        request.user = user
 
         self.assertTrue(request.user.is_authenticated)
         response = views.login_view.as_view()(request)
-
         self.assertEqual(response.status_code, 302)
 
     def test_user_not_login_in_works(self):
@@ -108,4 +96,3 @@ class TestLoginView(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    

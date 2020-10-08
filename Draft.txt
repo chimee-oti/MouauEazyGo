@@ -1,0 +1,61 @@
+HOME PAGE ---- 
+a. Nav bar with logo and other navigations
+
+b. Hero image with sign up and login links, also an hero text. 
+
+MAIN CONTENT -------
+a. Popular events around school like school programs, popular hit church program 
+
+b. Services where what we render would be be
+
+c. About Mouau containing links to about Mouau, college and departments, units administrations and admission procedures. 
+
+d. Top posts or blogs having informations of any kind concerning School and updates like news on admissions and happening around school. 
+
+e. Popular product adverts around school. 
+
+f. Testimonies from users. 
+End of homepage contents.
+
+
+USERS PROFILE DASHBOARD -------
+
+a. Profile navigation -- where our services will be for users to enjoy, users profile details, followers and followings, service links like easylearn easymarket, easyhelp, sent messages and inbox and settings
+
+b. Headnavigations --- where home nav, update and verify users will be and search option for other users. and a user small image. 
+
+Main content on the dashboard -----  
+a. Who to follow on top other users on the site most especially from same department or college, then on the navigation search users can search of anyone else. 
+
+b. Users post, information flow from lecturer to students coursereps to students and popular posts information and news from range from department to College and around school. What you follow determines the information you get. 
+
+c. A side sticky button for easyride options. and button for post write ups (these buttons are links to a separate page. For ride bookings and write ups.) 
+
+
+SIGN UP/LOGIN PAGES ----
+
+a. Sign up forms and login forms. Other forms will be updated later after sign ups
+
+
+Dashboard pages
+a. Easylearn pages for tutorials and learning articles would be. 
+
+b. Easyhelp pages where you can see people portfolio for different kind of help the offer with price tags if he or she wishes. 
+
+c. Easymarket  for sells and business adverts but most popular products might be on the popular post but not too much.
+
+
+STATIC PAGES (this should be public) -----
+
+a. Mouau -- everything about Mouau history and other things. 
+
+b. College/departments -- what colleges represents and departments below them. Then department and what they represent, lectures there and course reps. and different modes of registrations admissions of various department. 
+
+c. Administrations in Mouau 
+
+d. Units
+
+e. Admission process, guidelines and schedules for newly admitted students to follow and complete registrations easily.
+
+
+Further updates in due time.

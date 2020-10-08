@@ -21,11 +21,11 @@
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form|crispy }}
-    <input class='mb-4' type="submit" value="login" id="login">
+    <input type="submit" value="login" id="login">
     <input type="hidden" name="next" value="{{ next }}">
 </form>
-<button><a href="{% provider_login_url 'google' %}">Google Login</a></button>
-<button><a href="{% provider_login_url 'facebook' method='oauth2' %}">Facebook login</a></button>
+<button class="mt-4"><a href="{% provider_login_url 'google' %}">Google Login</a></button>
+<button class="mt-4"><a href="{% provider_login_url 'facebook' method='oauth2' %}">Facebook login</a></button>
 
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Lost password?</a></p>

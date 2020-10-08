@@ -13,11 +13,13 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from user.mixins import Update_view
+from user.mixins import Update_view, UserAlreadyLoggedInTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
+from braces.views import CsrfExemptMixin
 
 
 
@@ -68,7 +70,7 @@ class user_profile_detail_view(LoginRequiredMixin, DetailView):
         return obj
 
 
-class login_view(auth_views.LoginView):
+class login_view(UserAlreadyLoggedInTestMixin, auth_views.LoginView):
     template_name = "user/login.html"
 
 

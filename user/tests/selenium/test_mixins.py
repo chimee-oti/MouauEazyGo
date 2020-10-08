@@ -1,13 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.urls import reverse
-import pytest
 from user.tests.factories import UserFactory
 from user.tests.selenium.common import Common
 import time
+import pytest
 
 
+@tag('selenium')
 @pytest.mark.skip
 class TestUpdateViewMixin(TestCase):
     def setUp(self):
