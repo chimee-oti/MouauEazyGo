@@ -8,6 +8,25 @@ from django.shortcuts import reverse
 
 class CustomAccountManager(BaseUserManager):
 
+    def _create_user(self, email, username, firstname, lastname, password, **other_fields):
+        """create and saves the user with the given info"""
+
+        if not email:
+            raise ValueError(_('You must provide an email address'))
+
+        email = self.normalize_email(email)
+        user = self.model(email=email, username=username, firstname=firstname, lastname=lastname, **other_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, username, firstname, lastname, password=None, **other_fields):
+        other_fields.setdefault('is_superuser', False)
+        other_fields.setdefault('is_staff', False)
+        other_fields.setdefault('is_active', True)
+
+        return self._create_user(email, username, firstname, lastname, password, **other_fields)
+
     def create_superuser(self, email, username, firstname, lastname, password, **other_fields):
 
         other_fields.setdefault('is_staff', True)
@@ -20,18 +39,7 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError(
                 'Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, username, firstname, lastname, password, **other_fields)
-
-    def create_user(self, email, username, firstname, lastname, password, **other_fields):
-
-        if not email:
-            raise ValueError(_('You must provide an email address'))
-
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username, firstname=firstname, lastname=lastname, **other_fields)
-        user.set_password(password)
-        user.save()
-        return user
+        return self._create_user(email, username, firstname, lastname, password, **other_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -41,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     firstname = models.CharField(max_length=150)
     lastname = models.CharField(max_length=150)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     objects = CustomAccountManager()
 

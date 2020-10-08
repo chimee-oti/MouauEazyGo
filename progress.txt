@@ -1,1 +1,5 @@
-login in user after registration
+The update view is working perfectly
+i need to login successsfully before the update view can work.
+the login was not working because the users were inactive.
+I will work on why the user_profile_page_detail page is not found after the selenium tests
+I need to authenticate the user by creating a custom authentication backend
