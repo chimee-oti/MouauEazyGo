@@ -3,6 +3,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse
+
+class RedirectUserView(generic.RedirectView):
+	url = '/user/'
 
 
 class PostListView(generic.ListView):

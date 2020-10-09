@@ -14,7 +14,7 @@ class ProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Profile
 
-    date_of_birth = faker.date_of_birth()
+    date_of_birth = factory.Faker('date_of_birth')
     image = factory.django.ImageField(filename="uploadedImage.jpg")
     user = factory.SubFactory('user.tests.factories.UserFactory', profile=None)
 
@@ -25,10 +25,10 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    email = faker.email()
-    username = faker.user_name()
-    firstname = faker.first_name()
-    lastname = faker.last_name()
-    password = faker.password()
+    email = factory.Faker('email')
+    username = factory.Faker('user_name')
+    firstname = factory.Faker('first_name')
+    lastname = factory.Faker('last_name')
+    password = factory.Faker('password')
     profile = factory.RelatedFactory(
         ProfileFactory, factory_related_name='user')
