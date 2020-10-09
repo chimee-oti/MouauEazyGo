@@ -6,8 +6,6 @@ from faker import Faker
 import factory
 from django.urls import reverse
 from user.models import User
-import pytest
-
 
 
 class TestUpdateViewMixin(TestCase):
@@ -32,7 +30,7 @@ class TestUpdateViewMixin(TestCase):
         #self.request.user = self.user
         #self.response = views.update_profile.as_view()(self.request)
         #self.response.client = Client()
-        self.user.refresh_from_db()
+        self.user.refresh_from_db
         
     def test_success_url_redirect(self):
     	self.assertEqual(self.response.status_code, 302)
@@ -41,4 +39,3 @@ class TestUpdateViewMixin(TestCase):
     def test_email_updated(self):
     	view = views.update_profile
     	self.assertEqual(self.user.email, self.data.get('email', ''))
-

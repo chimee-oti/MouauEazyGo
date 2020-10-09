@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'MouauEasyGo.wsgi.application'
 
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
+    'user.backends.UserBackend',
     # 'allauth.account.auth_backends.AuthenticationBackend',
 )
 
