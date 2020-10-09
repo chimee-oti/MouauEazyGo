@@ -20,8 +20,11 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from braces.views import CsrfExemptMixin
+from django.views.generic.base import RedirectView
 
 
+# class basehome(RedirectView):
+#     pattern_name = 'register'
 
 def user_register_view(request):
     form = UserRegistrationForm(request.POST, request.FILES)
@@ -31,10 +34,10 @@ def user_register_view(request):
         user.profile.date_of_birth = form.cleaned_data.get('date_of_birth')
         user.profile.image = form.cleaned_data.get('image')
         user.save()
-        username = form.cleaned_data.get('username')
+        email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password1')
-        # user = authenticate(username=username, password=password)
-        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        auth_user = authenticate(username=email, password=password)
+        login(request, auth_user)
         return redirect('user_profile_detail')
     else:
         form = UserRegistrationForm()
