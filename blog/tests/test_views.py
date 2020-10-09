@@ -3,7 +3,6 @@ from blog.tests.factories import PostFactory
 from blog import views
 from user.tests.factories import UserFactory
 import pytest
-from django.test.client import RequestFactory
 from django.urls import reverse
 
 
