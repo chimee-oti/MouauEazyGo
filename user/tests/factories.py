@@ -5,9 +5,6 @@ from user.models import User, Profile
 from faker import Factory
 
 
-faker = Factory.create()
-
-
 @factory.django.mute_signals(post_save)
 class ProfileFactory(factory.django.DjangoModelFactory):
 

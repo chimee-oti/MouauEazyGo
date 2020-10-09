@@ -7,17 +7,19 @@ from django.test.client import RequestFactory
 from django.urls import reverse
 
 
-@pytest.mark.skip
 class TestPostListView(TestCase):
 	def setUp(self):
+		self.view = views.UserPostListView
 		self.user1 = UserFactory()
 		self.user2 = UserFactory()
+		self.url = reverse('blog:user-posts', kwargs={'username': self.user1.username})
 		self.post = PostFactory()
-		self.posts_user1 = PostFactory.create_batch(2, user=self.user1)
-		self.posts_user2 = PostFactory(3, user=self.user2)
-		self.request = RequestFactory().post(reverse('user-posts'), kwargs='username': self.user1.username)
-		self.response = views.UserPostListView.as_view(self.request)
-		
-		
+		self.posts_user1 = PostFactory.create_batch(2, author=self.user1)
+		self.posts_user2 = PostFactory.create_batch(3, author=self.user2)
+		self.request = RequestFactory().get(self.url)
+		self.response = self.view.as_view()(self.request)
+
 	def test_get_queryset_method(self):
-		
+		context = self.views.get_queryset(self.views)
+		user1_post_queryset = Post.objects.filter(author=user1).order_by('-time_posted')
+		self.assertQuerysetEqual(context, user_post_queryset)
