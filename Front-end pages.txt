@@ -7,3 +7,6 @@ note: more features will still be added to pages that you have already created a
     the user has the following features: 
     email, first name, last name, username, date of birth. for now
 5. user profile update view if someone wants up date their profile wants up date their profile
+6. blog home page. this would have a list of posts
+7. blog post detail page. this would contain the details of a post, time, category pictures, content, voting, comment and the likes. also a link to the author blog page
+8. Author blog page. this would content brief details about the author of the post and a list of other post by the same author. and a link to the author's main profile
