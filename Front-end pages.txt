@@ -1,12 +1,50 @@
-note: more features will still be added to pages that you have already created as we progress, keep that in mind. 
+note: more features will still be added to pages that you have already 
+    created as we progress, keep that in mind. 
 
-1. home page
-2. login or sign in page
-3. sign up or register page
-4. user profile dashboard 
+@. login page should include links for forget password
+
+
+@. user profile dashboard 
     the user has the following features: 
-    email, first name, last name, username, date of birth. for now
-5. user profile update view if someone wants up date their profile wants up date their profile
-6. blog home page. this would have a list of posts
-7. blog post detail page. this would contain the details of a post, time, category pictures, content, voting, comment and the likes. also a link to the author blog page
-8. Author blog page. this would content brief details about the author of the post and a list of other post by the same author. and a link to the author's main profile
+    email, first name, last name, username, date of birth, link
+    for password reset, info link department, collage reg number
+    and other info for now. would also include a settings sections
+    where users can choice which of their details can be marked as 
+    public or private, lists of groups they are members of, users that
+    they have blocked, etc 
+
+
+@. user profile update view if someone wants up date their profile wants 
+    update their profile info. This would likely be similiar to the profile 
+    dashboard but would be like a form for updating whatever they like except
+    their password
+
+
+@. blog home page. this would have a list of highly rated posts
+
+
+@. blog post detail page. this would contain the details of a post, time, 
+    category pictures, content, voting, comment and the likes. also a link to 
+    the author blog page
+
+
+@. Author blog page. this would content brief details about the author of 
+    the post and a list of other post by the same author. and a link to the 
+    author's main profile
+
+
+@. A detailed accordion page, that would have a section for the departments 
+    and the courses offered in the school. the default page for departments
+    would be about the school while the default page for courses can be 
+    a general summary of all the courses in the school and how lectures are 
+    handled in the school
+    if a user clicks on the school, it shows a list of colleges and when they 
+    click on it collage it shows a list of the departments under that collage
+    under department we could see a list of the levels and under each level, 
+    basic course rep info and a link list of all the courses for that level. 
+    Detail pages for the department and collages would include detail about 
+    them, their location, offices, contact, and other details
+
+@. an inbox page for a user to view their sent and received messages, groups
+    messsages and important messages. messages would have read and unread, 
+    etc.
