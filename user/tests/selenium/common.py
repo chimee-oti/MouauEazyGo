@@ -47,7 +47,7 @@ class Common(object):
         
         image_field = driver.find_element_by_id("id_image")
         image_field.send_keys(
-            r"C:\Users\Elisha\Pictures\Screenshots\Screenshot (16).png")
+            r"E:\Picture\Happy birthday Esther ❤️ 20200120_105048.jpg")
         
         driver.find_element_by_id("register").click()
         time.sleep(10)

@@ -5,15 +5,15 @@ from user.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
 
-class RedirectUserView(generic.RedirectView):
-	url = '/user/'
+# class RedirectUserView(generic.RedirectView):
+# 	url = '/user/'
 
 
 class PostListView(generic.ListView):
     model = Post
     template_name = 'blog/home.html'
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    ordering = ['-time_posted']
     paginate_by = 5
 
 

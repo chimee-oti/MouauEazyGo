@@ -8,7 +8,7 @@
     </fieldset>
     <h2>Are you sure you want to delete the post {{ object.title }}</h2>
     <div class="form-group">
-      <a class="btn btn-outline-secondary" href="{% url 'post-detail' object.id %}">Cancel</a>
+      <a class="btn btn-outline-secondary" href="{% url 'blog:post-detail' object.id %}">Cancel</a>
       <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
     </div>
   </form>

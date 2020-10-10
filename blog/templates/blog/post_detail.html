@@ -10,10 +10,10 @@
                     <h1>{{ object.title }}</h1>
                     <p class="lead">
                         by
-                        <a href="{% url 'user-posts' post.author.username %}">{{ object.author }}</a>
+                        <a href="{% url 'blog:user-posts' post.author.username %}">{{ object.author }}</a>
                     </p>
                 </div>
-                <p class="small">Posted on {{ object.date_posted|date:"F d, Y" }}</p>
+                <p class="small">Posted on {{ object.date_posted|date:"F d, Y. h:i A" }}</p>
             </div>
             {% if object.author == user %}
             <div>

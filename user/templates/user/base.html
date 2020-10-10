@@ -8,11 +8,13 @@
     <title>MouauEasyGo</title>
     <link rel="stylesheet" href="{% static 'user/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'user/css/custom_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/custom_styles.css' %}">
+
 </head>
 
 <body>
     <nav class="nav">
-        <a class="nav-link" href="#">Chat App</a>
+        <a class="nav-link" href="{% url 'blog:home' %}">Blog</a>
         <a class="nav-link" href="#">Inbox</a>
         <a class="nav-link" href="#">{{ user }}</a>
 

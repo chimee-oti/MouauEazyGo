@@ -5,6 +5,7 @@ from user.models import User, Profile
 from faker import Factory
 
 
+
 @factory.django.mute_signals(post_save)
 class ProfileFactory(factory.django.DjangoModelFactory):
 
@@ -12,7 +13,7 @@ class ProfileFactory(factory.django.DjangoModelFactory):
         model = Profile
 
     date_of_birth = factory.Faker('date_of_birth')
-    image = factory.django.ImageField(filename="uploadedImage.jpg")
+    image = factory.django.ImageField(from_path=r"C:\Users\Elisha\Pictures\Screenshots\Screenshot (23).png", filename=r"\profile_pics\uploadedimage", format="png")
     user = factory.SubFactory('user.tests.factories.UserFactory', profile=None)
 
 
@@ -29,3 +30,16 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.Faker('password')
     profile = factory.RelatedFactory(
         ProfileFactory, factory_related_name='user')
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        email = kwargs.pop("email", None)
+        username = kwargs.pop("username", None)
+        firstname = kwargs.pop("firstname", None)
+        lastname = kwargs.pop("lastname", None)
+        password = kwargs.pop("password", None)
+        obj = User(email=email, username=username,
+            firstname=firstname, lastname=lastname)
+        obj.set_password(password)
+        obj.save()
+        return obj

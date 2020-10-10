@@ -61,17 +61,7 @@ class TestUserProfileDetailView(TestCase):
         self.assertEqual(
             views.user_profile_detail_view.get_queryset(views.user_profile_detail_view)[0], Profile.objects.filter(user=user).first())
 
-    def test_user_no_profile_get_object_exception(self):
-        user = UserFactory(profile=None)
-        url = reverse('user_profile_detail')
-        factory = RequestFactory()
-        request = factory.get(url)
-        request.user = user
 
-        with self.assertRaises(Http404):
-            response = views.user_profile_detail_view.as_view()(request)
-
-    
 class TestLoginView(TestCase):
     def setUp(self):
         self.client = Client()

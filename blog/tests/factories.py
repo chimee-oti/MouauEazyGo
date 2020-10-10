@@ -12,7 +12,7 @@ class PostFactory(factory.django.DjangoModelFactory):
 	class Meta:
 		model = Post
 
-	title = fake.lexify('? ?? ??? ??????')
+	title = fake.lexify('?? ??? ??????')
 	content = factory.Faker('text')
 	author = factory.SubFactory(UserFactory)
 	time_posted = factory.Faker('date_time_this_year')

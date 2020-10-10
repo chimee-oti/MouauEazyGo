@@ -36,7 +36,7 @@ def user_register_view(request):
         user.save()
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password1')
-        auth_user = authenticate(username=email, password=password)
+        auth_user = authenticate(email=email, password=password)
         login(request, auth_user)
         return redirect('user_profile_detail')
     else:
