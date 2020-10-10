@@ -60,13 +60,12 @@ class user_profile_detail_view(LoginRequiredMixin, DetailView):
     model = Profile
 
     def get_object(self, queryset=None):
-        if queryset is None:
-            queryset = self.get_queryset()
         pk = self.request.user.id
-        queryset = queryset.filter(pk=pk)
+        user = User.objects.get(pk=pk)
+        queryset = Profile.objects.filter(user=user)
         try:
             # Get the single item from the filtered queryset
-            obj = queryset.get()
+            obj = queryset.first()
         except queryset.model.DoesNotExist:
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': queryset.model._meta.verbose_name})
