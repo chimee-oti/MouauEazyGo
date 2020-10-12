@@ -32,22 +32,9 @@ class Update_view(FormView):
 
     def get_context_data(self, **kwargs):
         if 'uForm' not in kwargs and 'pForm' not in kwargs:
-            kwargs['uForm'] = UserUpdateForm(instance=self.request.user)
-            kwargs['pForm'] = ProfileUpdateForm(
-                instance=self.request.user.profile)
+            kwargs['uForm'] = UserUpdateForm(
+                self.request.POST, instance=self.request.user)
+            kwargs['pForm'] = ProfileUpdateForm(self.request.POST, self.request.FILES, instance=self.request.user.profile)
         return kwargs
 
-
-class UserAlreadyLoggedInTestMixin(UserPassesTestMixin):
-    def dispatch(self, request, *args, **kwargs):
-        user_test_result = self.get_test_func()()
-        if not user_test_result:
-            return redirect(reverse('user_profile_detail'))
-        return super().dispatch(request, *args, **kwargs)
-
-    def test_func(self):
-        user = self.request.user
-        if not user.is_authenticated:
-            return True
-        if user.is_authenticated:
-            return False
+        

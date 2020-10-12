@@ -13,7 +13,7 @@ class ProfileFactory(factory.django.DjangoModelFactory):
         model = Profile
 
     date_of_birth = factory.Faker('date_of_birth')
-    image = factory.django.ImageField(from_path=r"C:\Users\Elisha\Pictures\Screenshots\Screenshot (23).png", filename=r"\profile_pics\uploadedimage", format="png")
+    image = factory.django.ImageField(from_path=r"C:\Users\Elisha\Pictures\Screenshots\Screenshot (23).png", filename=r"\uploadedimage", format="png")
     user = factory.SubFactory('user.tests.factories.UserFactory', profile=None)
 
 

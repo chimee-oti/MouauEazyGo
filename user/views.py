@@ -13,7 +13,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from user.mixins import Update_view, UserAlreadyLoggedInTestMixin
+from user.mixins import Update_view
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
@@ -26,23 +26,7 @@ from django.views.generic.base import RedirectView
 # class basehome(RedirectView):
 #     pattern_name = 'register'
 
-def user_register_view(request):
-    form = UserRegistrationForm(request.POST, request.FILES)
-    if form.is_valid():
-        user = form.save()
-        user.refresh_from_db()
-        user.profile.date_of_birth = form.cleaned_data.get('date_of_birth')
-        user.profile.image = form.cleaned_data.get('image')
-        user.save()
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password1')
-        auth_user = authenticate(email=email, password=password)
-        login(request, auth_user)
-        return redirect('user_profile_detail')
-    else:
-        form = UserRegistrationForm()
-    return render(request, 'user/register.html', {'form': form})
-    
+
 
 class update_profile(LoginRequiredMixin, Update_view):
     """inheriting the main deadly mixin I wrote"""
@@ -63,42 +47,10 @@ class user_profile_detail_view(LoginRequiredMixin, DetailView):
         pk = self.request.user.id
         user = User.objects.get(pk=pk)
         queryset = Profile.objects.filter(user=user)
-        try:
+        if queryset:
             # Get the single item from the filtered queryset
             obj = queryset.first()
-        except queryset.model.DoesNotExist:
+        else:
             raise Http404(_("No %(verbose_name)s found matching the query") %
                           {'verbose_name': queryset.model._meta.verbose_name})
         return obj
-
-
-class login_view(UserAlreadyLoggedInTestMixin, auth_views.LoginView):
-    template_name = "user/login.html"
-
-
-class logout_view(auth_views.LogoutView):
-    template_name = "user/logout.html"
-
-
-class password_change_view(LoginRequiredMixin, auth_views.PasswordChangeView):
-    template_name = "user/password_change_form.html"
-
-
-class password_change_done_view(LoginRequiredMixin, auth_views.PasswordChangeDoneView):
-    template_name = "user/password_change_done.html"
-
-
-class password_reset_view(auth_views.PasswordResetView):
-    template_name = "user/password_reset.html"
-
-
-class password_reset_done_view(auth_views.PasswordResetDoneView):
-    template_name = "user/password_reset_done.html"
-
-
-class password_reset_confirm_view(auth_views.PasswordResetConfirmView):
-    template_name = "user/password_reset_confirm_done.html"
-
-
-class password_reset_complete_view(auth_views.PasswordResetCompleteView):
-    template_name = "user/password_reset_complete.html"

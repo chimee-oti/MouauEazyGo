@@ -96,8 +96,7 @@ WSGI_APPLICATION = 'MouauEasyGo.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'user.backends.EmailBackend',
-    # 'allauth.account.auth_backends.AuthenticationBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 
@@ -157,8 +156,8 @@ MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
-LOGOUT_REDIRECT_URL = reverse_lazy('login')
-LOGIN_URL = reverse_lazy('login')
+LOGOUT_REDIRECT_URL = reverse_lazy('account_login')
+LOGIN_URL = reverse_lazy('account_login')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -177,18 +176,18 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = None
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 1000
-ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy('login')
+ACCOUNT_LOGOUT_REDIRECT_URL = reverse_lazy('account_login')
 LOGIN_REDIRECT_URL = reverse_lazy('user_profile_detail')
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_PRESERVE_USERNAME_CASING = False
 ACCOUNT_SESSION_REMEMBER = None
-ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
 # ACCOUNT_SIGNUP_FORM_CLASS = this should represent additional details for signup form, check docs
 ACCOUNT_USERNAME_MIN_LENGTH = 3
 
 
 ACCOUNT_FORMS = {
-    'signup': 'user.forms.CustomSignupForm',
+    'signup': 'user.forms.UserRegistrationForm',
 }
 
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
